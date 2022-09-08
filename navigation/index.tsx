@@ -1,14 +1,8 @@
-/**
- * If you are not familiar with React Navigation, refer to the "Fundamentals" guide:
- * https://reactnavigation.org/docs/getting-started
- *
- */
 import { DarkTheme, DefaultTheme, NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import * as React from 'react';
 import { ColorSchemeName } from 'react-native';
 import Game from '../screens/game/Game';
-import ModalScreen from '../screens/ModalScreen';
 import NotFoundScreen from '../screens/NotFoundScreen';
 import Results from '../screens/Results';
 import Menu from '../screens/Menu';
@@ -48,9 +42,6 @@ function RootNavigator() {
       <Stack.Screen name="Game" component={Game} options={{ headerShown: false, cardStyleInterpolator: forFade }} />
       <Stack.Screen name="Results" component={Results} options={{ headerShown: false, cardStyleInterpolator: forFade }} />
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
-      <Stack.Group screenOptions={{ presentation: 'modal' }}>
-        <Stack.Screen name="Modal" component={ModalScreen} />
-      </Stack.Group>
     </Stack.Navigator>
   );
 }

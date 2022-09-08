@@ -1,16 +1,15 @@
-import { useNavigationContainerRef } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
 import React from 'react';
-import { Button, Pressable, StyleSheet } from 'react-native';
+import { Pressable, StyleSheet } from 'react-native';
 import { MonoText } from '../components/StyledText';
 import { View } from '../components/Themed';
+import i18n from '../i18n/i18n';
 import { RootTabScreenProps } from '../types';
 
 
 export default function Menu({ navigation }: RootTabScreenProps<'Root'>) {
 
   const startGame = () => {
-    console.log('start');
     navigation.navigate('Game');
   }
 
@@ -21,9 +20,8 @@ export default function Menu({ navigation }: RootTabScreenProps<'Root'>) {
         style={styles.background}
       />
       <Pressable onPress={startGame}>
-        <MonoText style={styles.title}>start game</MonoText>
+        <MonoText style={styles.title}>{i18n.t('start')}</MonoText>
       </Pressable>
-
     </View>
   );
 }

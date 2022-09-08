@@ -21,6 +21,7 @@ export default function useCachedResources() {
           'rubik': require('../assets/fonts/Rubik-Regular.ttf'),
           'quicksand': require('../assets/fonts/Quicksand-Regular.ttf'),
           'quicksand-bold': require('../assets/fonts/Quicksand-Bold.ttf'),
+          'champagne-limousines': require('../assets/fonts/Champagne-Limousines.ttf'),
         });
       } catch (e) {
         // We might want to provide this error information to an error reporting service

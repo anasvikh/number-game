@@ -1,6 +1,5 @@
 import React, { useEffect, useRef } from 'react';
 import { Animated, Pressable, StyleSheet } from 'react-native';
-import { MonoText } from '../../../components/StyledText';
 
 export function NumberItem({ item, isShowHint, onPress }: any) {
 
@@ -11,6 +10,7 @@ export function NumberItem({ item, isShowHint, onPress }: any) {
   }, [isShowHint]);
 
   const fadeAnim = useRef(new Animated.Value(item?.opacity)).current;
+  const fontSizeAnim = useRef(new Animated.Value(item?.fontSize)).current;
   const colorAnim = useRef(new Animated.Value(0)).current;
 
   const fadeIn = () => {
@@ -24,6 +24,11 @@ export function NumberItem({ item, isShowHint, onPress }: any) {
       }),
       Animated.timing(colorAnim, {
         toValue: 1,
+        duration: 1000,
+        useNativeDriver: false
+      }),
+      Animated.timing(fontSizeAnim, {
+        toValue: 36,
         duration: 1000,
         useNativeDriver: false
       })
@@ -40,7 +45,7 @@ export function NumberItem({ item, isShowHint, onPress }: any) {
     fontSize: item.fontSize,
     opacity: item.opacity,
     color: 'white',
-    fontFamily: 'quicksand'
+    fontFamily: 'champagne-limousines'
   };
 
   return (
@@ -51,6 +56,7 @@ export function NumberItem({ item, isShowHint, onPress }: any) {
       <Animated.Text
         style={[fontStyles, {
           opacity: fadeAnim,
+          fontSize: fontSizeAnim,
           color: colorAnim.interpolate({
             inputRange: [0, 1],
             outputRange: ['white', 'yellow']

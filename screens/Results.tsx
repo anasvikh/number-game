@@ -1,13 +1,44 @@
-import { useNavigationContainerRef } from '@react-navigation/native';
+import { Audio } from 'expo-av';
 import { LinearGradient } from 'expo-linear-gradient';
-import React from 'react';
-import { Button, Pressable, StyleSheet } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Pressable, StyleSheet } from 'react-native';
 import { MonoText } from '../components/StyledText';
 import { View } from '../components/Themed';
 import { RootTabScreenProps } from '../types';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import i18n from '../i18n/i18n';
 
 
 export default function Results({ navigation, route }: RootTabScreenProps<'Results'>) {
+
+  const repeatGame = () => {
+    navigation.navigate('Root');
+    navigation.navigate('Game');
+  }
+
+  const result = route?.params?.result;
+  const [isBestScore, setIsBestScore] = useState(false);
+  const [bestScore, setBestScore] = useState(0);
+
+
+  useEffect(() => {
+    Audio.Sound.createAsync(
+      require('../assets/sounds/level-complete.wav'),
+      { shouldPlay: true, isLooping: false }
+    );
+
+    const checkBestScore = async () => {
+      const currentBestScore = await AsyncStorage.getItem('best_score') ?? 0;
+      setBestScore(+currentBestScore);
+      if (route?.params?.result < +currentBestScore) {
+        setIsBestScore(true);
+        AsyncStorage.setItem('best_score', result.toString());
+      }
+    }
+
+    checkBestScore();
+
+  });
 
   return (
     <View style={styles.container}>
@@ -15,13 +46,14 @@ export default function Results({ navigation, route }: RootTabScreenProps<'Resul
         colors={['#330867', '#30cfd0']}
         style={styles.background}
       />
-      <MonoText style={[styles.title]}>congratulations!</MonoText>
-      <MonoText style={[styles.title, styles.text]}>your time: {route?.params?.result}s</MonoText>
+      <MonoText style={[styles.title]}>{i18n.t('congratulations')}!</MonoText>
+      <MonoText style={[styles.title]}>{isBestScore ? i18n.t('newRecord') : i18n.t('yourTime')}: {route?.params?.result}{i18n.t('second')}</MonoText>
+      {!isBestScore && <MonoText style={[styles.title]}>{i18n.t('bestResult')}: {bestScore}{i18n.t('second')}</MonoText>}
       <Pressable onPress={() => navigation.navigate('Root')}>
-        <MonoText style={styles.title}>main menu</MonoText>
+        <MonoText style={[styles.title, styles.margin]}>{i18n.t('menu')}</MonoText>
       </Pressable>
-      <Pressable onPress={() => navigation.navigate('Game')}>
-        <MonoText style={styles.title}>repeat game</MonoText>
+      <Pressable onPress={repeatGame}>
+        <MonoText style={styles.title}>{i18n.t('repeatGame')}</MonoText>
       </Pressable>
 
     </View>
@@ -46,8 +78,8 @@ const styles = StyleSheet.create({
     color: '#ffffff',
     margin: '3%'
   },
-  text: {
+  margin: {
     margin: 0,
-    marginBottom: '40%'
+    marginTop: '40%'
   },
 });
